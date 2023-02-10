@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Temperatura y Humedad</title>
+    <!-- Add some CSS to change client UI -->
+    <style>
+   
+    body {
+        background-color: #D4F1F4;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/7084/7084505.png');
+        background-size: 300px 300px;
+        background-repeat: no-repeat;
+        background-position: 290px;
+        text-align: justify;
+        margin-top: 150px;
+        
+        }
+    label, button {
+        color: #e38f13;
+        font-family: Segoe UI, Helvetica, sans-serif;
+        font-size: 20px;
+        text-align: left;
+        border:1px;
+        border-radius:30px;
+        margin-left: 600px;
+        margin-top: 50px;
+        
+        }
+     input {
+        color: #05445E;
+        font-family: Segoe UI, Helvetica, sans-serif;
+        font-size: 20px;
+        padding:10px;
+        border:0;
+        border-radius:30px;
+        margin-left: 10px;
+        margin-top: 50px;
+        text-align: left;
+        }
+    cuadro {
+        color: #ffffff;
+        width: 250;
+        height: 150;
+        border-radius:30px;
+        margin-left: 500px;
+        margin-top: 300px;
+     
+        }
+    </style>
+    <script>
+        // define the callAPI function that takes a first name and last name as parameters
+        var callAPI = (Temp,Hum,ID)=>{
+            // instantiate a headers object
+            var myHeaders = new Headers();
+            // add content type header to object
+            myHeaders.append("Content-Type", "application/json");
+            // using built in JSON utility package turn object to string and store in a variable
+            var raw = JSON.stringify({"Temperatura":Temp,"Humedad":Hum,"ID":ID});
+            // create a JSON object with parameters for API call and store in a variable
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            // make API call with parameters and use promises to get response
+            fetch(" https://fzjtupnhme.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
+            .then(response => response.text())
+            .then(result => alert(JSON.parse(result).body))
+            .catch(error => console.log('error', error));
+        }
+    </script>
+</head>
+<body>
+    <form> 
+        <label>Ingrese Temperatura y Humedad</label>
+        <br>
+        <label>Temperatura :</label>
+        <input type="text" id="fTemp">
+        <br>
+        <label>Humedad:</label>
+        <input type="text" id="fHum">
+        <br>
+        <!-- set button onClick method to call function we defined passing input values as parameters -->
+        <button type="button" onclick="callAPI(document.getElementById('fTemp').value,document.getElementById('fHum').value,'Web')">Call API</button>
+    </form>
+    
+</body>
+
+</html>
